@@ -1,0 +1,17 @@
+{
+  "name": "threejs-shooter",
+  "version": "0.1.0",
+  "description": "threejs experiment",
+  "main": "gulpfile.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-browserify": "^0.5.1",
+    "gulp-connect": "^2.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Koen Vendrik",
+  "license": "BSD 2-Clause"
+}
