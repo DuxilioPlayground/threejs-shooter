@@ -4,14 +4,14 @@ var gulp = require('gulp'),
 
 var pkg = require('./package.json'),
     rootPaths = {
-        www: 'js_public',
+        www: 'assets_public',
         dev: 'js_dev'
     },
     paths = {
         js: {
             src: rootPaths.dev+'/**/*.js',
             srcFile: rootPaths.dev+'/main.js',
-            dest: rootPaths.www
+            dest: rootPaths.www+'/js'
         }
     };
  

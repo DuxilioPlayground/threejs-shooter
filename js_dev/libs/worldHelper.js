@@ -1,4 +1,5 @@
-var utils = require('./utils');
+var CONFIG = require('../config'),
+	utils = require('./utils');
 
 var worldHelper = {
 
@@ -39,25 +40,37 @@ var worldHelper = {
 	    return new THREE.Mesh(geometry, material);
 	},
 
-	generateBoxes: function(amount){
-		var mesh,
-	    	boxes = [];
-	    for(var i = 0; i < 500; i++){
-		    mesh = this.generateBox({
-		    	width: 20,
-		    	height: 20,
-		    	depth: 20,
-		    	rgb: [55,81,159]
-		    });
+	generateBoxes: function(amount, callback){
+		var self = this,
+			textureLoader = new THREE.TextureLoader();
 
-		    mesh.position.x = Math.floor( Math.random() * 20 - 10 ) * 20;
-			mesh.position.y = Math.floor( Math.random() * 20 ) * 20 + 10;
-			mesh.position.z = Math.floor( Math.random() * 20 - 10 ) * 20;
-		    
-		    mesh.rotation.y = -100;
-		    boxes.push(mesh);
-    	}
-    	return boxes;
+		var doGenerate = function(crateTexture){
+			var mesh,
+				boxes = [];
+
+			for(var i = 0; i < amount; i++){
+			    mesh = self.generateBox({
+			    	width: 20,
+			    	height: 20,
+			    	depth: 20,
+			    	rgb: [55,81,159],
+			    	texture: crateTexture
+			    });
+
+			    mesh.position.x = Math.floor( Math.random() * 20 - 10 ) * 20;
+				mesh.position.y = Math.floor( Math.random() * 20 ) * 20 + 10;
+				mesh.position.z = Math.floor( Math.random() * 20 - 10 ) * 20;
+			    
+			    mesh.rotation.y = -100;
+			    boxes.push(mesh);
+	    	}
+
+	    	callback(boxes);
+		};
+
+		textureLoader.load(CONFIG.paths.img+'/crate.jpg', function(crateTexture){
+			doGenerate(crateTexture);
+		});
 	},
 	
 	generateBox: function(options){
@@ -66,16 +79,24 @@ var worldHelper = {
 			depth = options.depth,
 			rgb = options.rgb;
 
-	    var box = new THREE.BoxGeometry(width, height, depth),
+		var box = new THREE.BoxGeometry(width, height, depth),
+			material;
+
+		if(options.texture){
+	    	material = new THREE.MeshPhongMaterial({
+	    		map: options.texture
+	    	});
+	    } else {
 	    	material = new THREE.MeshBasicMaterial({
 	        	vertexColors: THREE.VertexColors
 	    	});
 
-	    var face, color;
-	    for (var i = 0; i < box.faces.length; i++) {
-	        face = box.faces[i];
-	        color = new THREE.Color('rgb('+(rgb[0]+(i*4))+','+(rgb[1]+(i*4))+','+(rgb[0]+(i*4))+')');
-	        face.color = color;
+	    	var face, color;
+		    for (var i = 0; i < box.faces.length; i++) {
+		        face = box.faces[i];
+		        color = new THREE.Color('rgb('+(rgb[0]+(i*4))+','+(rgb[1]+(i*4))+','+(rgb[0]+(i*4))+')');
+		        face.color = color;
+		    }
 	    }
 
 	    return new THREE.Mesh(box, material);

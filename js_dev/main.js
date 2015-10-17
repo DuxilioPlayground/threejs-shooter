@@ -17,11 +17,10 @@ function init() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
 
-    //boxes
-    var boxes = worldHelper.generateBoxes(500);
-    boxes.forEach(function(mesh){
-    	scene.add(mesh);
-    });
+    //light
+    var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
+    light.position.set( 0.5, 1, 0.75 );
+    scene.add( light );
 
     //floor
     var floorMesh = worldHelper.generateFloor();
@@ -34,11 +33,18 @@ function init() {
     var controls = lockControlsHelper.init(document.body, camera);
 	scene.add(controls.getObject());
 
-	movementHelper.init(controls, boxes, {
-		movementSpeed: 600,
-        jumpHeight: 350,
-        enableSuperJump: true
-	});
+    //boxes
+    var boxes = worldHelper.generateBoxes(500, function(boxes){
+        boxes.forEach(function(mesh){
+            scene.add(mesh);
+        });
+
+        movementHelper.init(controls, boxes, {
+            movementSpeed: 600,
+            jumpHeight: 350,
+            enableSuperJump: true
+        });
+    });
 
     // controls = new THREE.OrbitControls(camera);
     // controls.addEventListener('change', render);
