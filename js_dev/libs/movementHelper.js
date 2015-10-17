@@ -8,7 +8,8 @@ var movementHelper = {
 			forward: false,
 			backward: false,
 			right: false,
-			left: false
+			left: false,
+			canJump: false
 		};
 		this._velocity = new THREE.Vector3();
 		this._prevTime = performance.now();
@@ -28,6 +29,7 @@ var movementHelper = {
     	//update velocity
     	velocity.x -= velocity.x * 10.0 * delta;
     	velocity.z -= velocity.z * 10.0 * delta;
+    	velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
 
     	//check directional movement
     	if(movement.forward) velocity.z -= options.movementSpeed * delta;
@@ -38,6 +40,14 @@ var movementHelper = {
     	//update controls
     	controls.getObject().translateZ(velocity.z * delta);
     	controls.getObject().translateX(velocity.x * delta);
+    	controls.getObject().translateY(velocity.y * delta);
+
+    	//detect floor
+    	if(controls.getObject().position.y < 10) {
+			velocity.y = 0;
+			controls.getObject().position.y = 10;
+			this._movement.canJump = true;
+		}
 
     	this._prevTime = time;
 	},
@@ -65,6 +75,14 @@ var movementHelper = {
 				break;
 			case 65: // a
 				this._movement.left = setToVal;
+				break;
+			case 32: // space
+				if(setToVal === true){ //keydown
+					if(this._movement.canJump === true){
+						this._velocity.y += 350;
+					}
+					this._movement.canJump = false;
+				}
 				break;
 		}
 	}
