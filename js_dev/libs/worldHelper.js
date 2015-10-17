@@ -1,4 +1,5 @@
-var utils = require('./utils');
+var CONFIG = require('../config'),
+	utils = require('./utils');
 
 var worldHelper = {
 
@@ -39,7 +40,7 @@ var worldHelper = {
 	    return new THREE.Mesh(geometry, material);
 	},
 
-	generateBoxes: function(amount, textureUrl, callback){
+	generateBoxes: function(amount, texturePath, callback){
 		var self = this,
 			textureLoader = new THREE.TextureLoader();
 
@@ -48,7 +49,7 @@ var worldHelper = {
 				boxes = [];
 
 			for(var i = 0; i < amount; i++){
-			    mesh = self.generateBox({
+			    mesh = self._generateBox({
 			    	width: 20,
 			    	height: 20,
 			    	depth: 20,
@@ -67,12 +68,12 @@ var worldHelper = {
 	    	callback(boxes);
 		};
 
-		textureLoader.load(textureUrl, function(crateTexture){
+		textureLoader.load(CONFIG.paths.img+texturePath, function(crateTexture){
 			doGenerate(crateTexture);
 		});
 	},
 	
-	generateBox: function(options){
+	_generateBox: function(options){
 		var width = options.width,
 			height = options.height,
 			depth = options.depth,

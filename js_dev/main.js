@@ -47,15 +47,21 @@ function init() {
         });
     };
 
-    worldHelper.generateBoxes(250, CONFIG.paths.img+'/crate.jpg', function(boxes){
-        worldHelper.generateBoxes(250, CONFIG.paths.img+'/crate2.gif', function(boxes2){
+    worldHelper.generateBoxes(250, '/crate.jpg', function(boxes){
+        worldHelper.generateBoxes(250, '/crate2.gif', function(boxes2){
             boxes = boxes.concat(boxes2);
             handleBoxes(boxes);
         });
     });
 
     //characters
-    var character = new Character(CONFIG.paths.models);
+    var character = new Character({
+        character: 'ogro',
+        weapon: 0
+    });
+    character.on('create', function(char){
+        char.root.position.x = 50;
+    });
     scene.add(character.getRaw().root);
     characters.push(character);
 
