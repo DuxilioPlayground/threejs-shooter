@@ -4,14 +4,14 @@ var gulp = require('gulp'),
 
 var pkg = require('./package.json'),
     rootPaths = {
-        www: 'www',
+        www: 'js_public',
         dev: 'js_dev'
     },
     paths = {
         js: {
             src: rootPaths.dev+'/**/*.js',
             srcFile: rootPaths.dev+'/main.js',
-            dest: rootPaths.www+'/js'
+            dest: rootPaths.www
         }
     };
  
@@ -20,7 +20,7 @@ gulp.task('connect', function(){
         livereload: true,
         host: '0.0.0.0',
         port: 9000,
-        root: rootPaths.www
+        root: __dirname
     });
 });
 
