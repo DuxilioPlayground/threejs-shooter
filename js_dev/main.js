@@ -35,6 +35,16 @@ function init() {
 	scene.add(controls.getObject());
 
     //boxes
+    generateBoxes(controls, scene, function(boxes){
+        //characters
+        generateCharacters(scene, boxes);
+    });
+
+    // controls = new THREE.OrbitControls(camera);
+    // controls.addEventListener('change', render);
+}
+
+function generateBoxes(controls, scene, callback){
     var handleBoxes = function(boxes){
         boxes.forEach(function(mesh){
             scene.add(mesh);
@@ -51,22 +61,24 @@ function init() {
         worldHelper.generateBoxes(250, '/crate2.gif', function(boxes2){
             boxes = boxes.concat(boxes2);
             handleBoxes(boxes);
+            callback(boxes);
         });
     });
+}
 
-    //characters
-    var character = new Character({
-        character: 'ogro',
-        weapon: 0
-    });
-    character.on('create', function(char){
-        char.root.position.x = 50;
-    });
-    scene.add(character.getRaw().root);
-    characters.push(character);
+function generateCharacters(scene, boxes){
+    var characterDetails = [{
+        x: 20,
+        character: 'ogro'
+    }, {
+        x: -20
+    }];
 
-    // controls = new THREE.OrbitControls(camera);
-    // controls.addEventListener('change', render);
+    characterDetails.forEach(function(details){
+        var character = new Character(details);
+        scene.add(character.getRaw().root);
+        characters.push(character);
+    });
 }
 
 function update() {

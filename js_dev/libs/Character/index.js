@@ -47,6 +47,10 @@ Character.prototype._createCharacter = function(charConfig){
             self.setWeapon(options.weapon);
         }
 
+        if(typeof options.x === 'number') character.root.position.x = options.x;
+        if(typeof options.y === 'number') character.root.position.y = options.y;
+        if(typeof options.z === 'number') character.root.position.z = options.z;
+
         self._triggerEvent('create');
     };
 
