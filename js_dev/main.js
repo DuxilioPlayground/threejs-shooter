@@ -36,7 +36,8 @@ function init() {
 
 	movementHelper.init(controls, boxes, {
 		movementSpeed: 600,
-        jumpHeight: 350
+        jumpHeight: 350,
+        enableSuperJump: true
 	});
 
     // controls = new THREE.OrbitControls(camera);

@@ -41,7 +41,7 @@ var movementHelper = {
     	if(movement.left) velocity.x -= options.movementSpeed * delta;
     	if(movement.right) velocity.x += options.movementSpeed * delta;
 
-    	//collision detection
+    	//objects collision detection
     	var isOnObject = this._checkObjectsCollision();
     	if(isOnObject){
 			velocity.y = Math.max(0, velocity.y);
@@ -89,6 +89,7 @@ var movementHelper = {
 	},
 
 	_checkKeys: function(keyCode, setToVal){
+		var options = this._options;
 		switch(keyCode){
 			case 87: //w
 				this._movement.forward = setToVal;
@@ -104,10 +105,12 @@ var movementHelper = {
 				break;
 			case 32: // space
 				if(setToVal === true){ //keydown
-					if(this._movement.canJump === true){
+					if(this._movement.canJump){
 						this._velocity.y += this._options.jumpHeight;
 					}
-					this._movement.canJump = false;
+					if(!options.enableSuperJump){
+						this._movement.canJump = false;
+					}
 				}
 				break;
 		}
