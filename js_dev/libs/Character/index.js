@@ -2,7 +2,7 @@ var CONFIG = require('../../config'),
     CHARACTERS_CONFIG = require('./charactersConfig');
 
 var Character = function(options){
-	this._options = options || {};
+	var options = this._options = options || {};
 
     this._eventListeners = {};
 	this._clock = new THREE.Clock();

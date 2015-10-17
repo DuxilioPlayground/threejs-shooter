@@ -38,6 +38,17 @@ function init() {
     generateBoxes(controls, scene, function(boxes){
         //characters
         generateCharacters(scene, boxes);
+
+        //weapon
+        utils.loadMD2({
+            md2: CONFIG.paths.models+'/shotgun/hud/Dreadus-Shotgun.md2',
+            skin: CONFIG.paths.models+'/shotgun/hud/Dreadus-Shotgun.jpg',
+            onSuccess: function(mesh){
+                mesh.scale.set(.05,.05,.05);
+                mesh.rotation.y = Math.PI / 2;
+                camera.add(mesh); 
+            }
+        });
     });
 
     // controls = new THREE.OrbitControls(camera);

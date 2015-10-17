@@ -5,7 +5,7 @@ var movementHelper = {
 		this._options = options;
 
 		this._objects = objects;
-		this._raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
+		this._raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
 
 		this._movement = {
 			forward: false,
@@ -54,9 +54,9 @@ var movementHelper = {
     	controls.getObject().translateX(velocity.x * delta);
 
     	//detect floor
-    	if(controls.getObject().position.y < 10) {
+    	if(controls.getObject().position.y < 20) {
 			velocity.y = 0;
-			controls.getObject().position.y = 10;
+			controls.getObject().position.y = 20;
 			movement.canJump = true;
 		}
 
@@ -66,14 +66,13 @@ var movementHelper = {
 	_checkObjectsCollision: function(){
 		var raycaster = this._raycaster,
 			objects = this._objects,
-			velocity = this._velocity,
 			controls = this._controls;
 
     	raycaster.ray.origin.copy(controls.getObject().position);
 		raycaster.ray.origin.y -= 10;
 
 		var intersections = raycaster.intersectObjects(objects),
-			isOnObject = intersections.length > 0; 
+			isOnObject = intersections.length > 0;
 
     	return isOnObject;
 	},
