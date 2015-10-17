@@ -7,13 +7,14 @@ var CONFIG = require('./config'),
 
 var scene,
     camera,
-    renderer;
+    renderer,
+    stats;
 
 var characters = [];
 
+initStats();
 init();
 update();
-render();
 
 function init() {
     scene = new THREE.Scene();
@@ -50,9 +51,6 @@ function init() {
             }
         });
     });
-
-    // controls = new THREE.OrbitControls(camera);
-    // controls.addEventListener('change', render);
 }
 
 function generateBoxes(controls, scene, callback){
@@ -92,8 +90,8 @@ function generateCharacters(scene, boxes){
     });
 }
 
-function update() {
-    requestAnimationFrame(update);
+function update(){
+    stats.begin();
 
     //update all characters
     characters.forEach(function(char){
@@ -105,10 +103,18 @@ function update() {
     	movementHelper.checkMovement();
     }
 
-    render();
-    //controls.update();
+    renderer.render(scene, camera);
+
+    stats.end();
+    requestAnimationFrame(update);
 }
 
-function render(){
-    renderer.render(scene, camera);
+function initStats(){
+    stats = new Stats();
+    stats.setMode(0);
+
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.left = '0px';
+    stats.domElement.style.top = '0px';
+    document.body.appendChild(stats.domElement);
 }
