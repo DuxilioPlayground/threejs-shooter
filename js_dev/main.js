@@ -40,15 +40,24 @@ function init() {
         generateCharacters(scene, boxes);
 
         //weapon
-        utils.loadMD2({
-            md2: CONFIG.paths.models+'/shotgun/hud/Dreadus-Shotgun.md2',
-            skin: CONFIG.paths.models+'/shotgun/hud/Dreadus-Shotgun.jpg',
-            onSuccess: function(mesh){
-                mesh.scale.set(.05,.05,.05);
-                mesh.rotation.y = Math.PI / 2;
-                camera.add(mesh); 
-            }
+        // utils.loadMD2({
+        //     md2: CONFIG.paths.models+'/shotgun/hud/Dreadus-Shotgun.md2',
+        //     skin: CONFIG.paths.models+'/shotgun/hud/Dreadus-Shotgun.jpg',
+        //     onSuccess: function(mesh){
+        //         mesh.scale.set(.05,.05,.05);
+        //         mesh.rotation.y = Math.PI / 2;
+        //         camera.add(mesh); 
+        //     }
+        // });
+
+        var character = new Character({
+            character: 'shotgun'
         });
+        character.getRaw().root.scale.set(.1,.1,.1);
+        character.getRaw().root.rotation.y = -Math.PI / 2;
+        character.getRaw().root.position.z = -50;
+        character.getRaw().root.position.y = -2000;
+        camera.add(character.getRaw().root);
     });
 
     // controls = new THREE.OrbitControls(camera);

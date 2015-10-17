@@ -41,7 +41,7 @@ Character.prototype._createCharacter = function(charConfig){
     var self = this;
     character.onLoadComplete = function(){
         self.setSkin(options.skin || 0);
-        self.setAnimation(options.animation || 'stand');
+        self.setAnimation(options.animation || character.meshBody.geometry.animations[0].name);
 
         if(typeof options.weapon === 'number'){
             self.setWeapon(options.weapon);

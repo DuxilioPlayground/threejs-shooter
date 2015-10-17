@@ -18,6 +18,13 @@ var charactersConfig = {
 	                ]
     },
 
+    shotgun: {
+	    path: '/shotgun/hud/',
+	    body: "Dreadus-Shotgun.md2",
+	    skins: [ "Dreadus-Shotgun.jpg" ],
+	    weapons:  []
+    },
+
     ogro: {
     	path: "/ogro/",
 		body: "ogro.md2",
