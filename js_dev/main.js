@@ -51,14 +51,23 @@ function init() {
         //     }
         // });
 
-        var character = new Character({
-            character: 'shotgun'
+        // var character = new Character({
+        //     character: 'shotgun'
+        // });
+        // character.getRaw().root.scale.set(.1,.1,.1);
+        // character.getRaw().root.rotation.y = -Math.PI / 2;
+        // character.getRaw().root.position.z = -50;
+        // character.getRaw().root.position.y = -2000;
+        // camera.add(character.getRaw().root);
+
+        $.getJSON("assets_public/models/shotgun/hud/Dreadus-Shotgun.json", function(shotgunModel){
+            $.get("assets_public/models/shotgun/hud/skins/Dreadus-Shotgun.jpg", function(shotgunTexture){
+                console.log(shotgunModel, shotgunTexture);
+                var mesh = new AnimatedMD2Model(shotgunModel, shotgunTexture);
+                mesh.rotation.y = -Math.PI / 2;
+                camera.add(mesh);
+            });
         });
-        character.getRaw().root.scale.set(.1,.1,.1);
-        character.getRaw().root.rotation.y = -Math.PI / 2;
-        character.getRaw().root.position.z = -50;
-        character.getRaw().root.position.y = -2000;
-        camera.add(character.getRaw().root);
     });
 }
 
