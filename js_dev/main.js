@@ -34,8 +34,9 @@ function init() {
     var controls = lockControlsHelper.init(document.body, camera);
 	scene.add(controls.getObject());
 
-	movementHelper.init(controls, {
-		movementSpeed: 600
+	movementHelper.init(controls, boxes, {
+		movementSpeed: 600,
+        jumpHeight: 350
 	});
 
     // controls = new THREE.OrbitControls(camera);

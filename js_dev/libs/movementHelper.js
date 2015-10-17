@@ -1,8 +1,11 @@
 var movementHelper = {
 
-	init: function(controls, options){
+	init: function(controls, objects, options){
 		this._controls = controls;
 		this._options = options;
+
+		this._objects = objects;
+		this._raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
 
 		this._movement = {
 			forward: false,
@@ -11,6 +14,7 @@ var movementHelper = {
 			left: false,
 			canJump: false
 		};
+
 		this._velocity = new THREE.Vector3();
 		this._prevTime = performance.now();
 
@@ -25,7 +29,7 @@ var movementHelper = {
 
 		var time = performance.now(),
     		delta = (time - this._prevTime) / 1000;
-    	
+
     	//update velocity
     	velocity.x -= velocity.x * 10.0 * delta;
     	velocity.z -= velocity.z * 10.0 * delta;
@@ -37,19 +41,41 @@ var movementHelper = {
     	if(movement.left) velocity.x -= options.movementSpeed * delta;
     	if(movement.right) velocity.x += options.movementSpeed * delta;
 
+    	//collision detection
+    	var isOnObject = this._checkObjectsCollision();
+    	if(isOnObject){
+			velocity.y = Math.max(0, velocity.y);
+			movement.canJump = true;
+		}
+
     	//update controls
     	controls.getObject().translateZ(velocity.z * delta);
-    	controls.getObject().translateX(velocity.x * delta);
     	controls.getObject().translateY(velocity.y * delta);
+    	controls.getObject().translateX(velocity.x * delta);
 
     	//detect floor
     	if(controls.getObject().position.y < 10) {
 			velocity.y = 0;
 			controls.getObject().position.y = 10;
-			this._movement.canJump = true;
+			movement.canJump = true;
 		}
 
     	this._prevTime = time;
+	},
+
+	_checkObjectsCollision: function(){
+		var raycaster = this._raycaster,
+			objects = this._objects,
+			velocity = this._velocity,
+			controls = this._controls;
+
+    	raycaster.ray.origin.copy(controls.getObject().position);
+		raycaster.ray.origin.y -= 10;
+
+		var intersections = raycaster.intersectObjects(objects),
+			isOnObject = intersections.length > 0; 
+
+    	return isOnObject;
 	},
 
 	_bindKeyEvents: function(){
@@ -79,7 +105,7 @@ var movementHelper = {
 			case 32: // space
 				if(setToVal === true){ //keydown
 					if(this._movement.canJump === true){
-						this._velocity.y += 350;
+						this._velocity.y += this._options.jumpHeight;
 					}
 					this._movement.canJump = false;
 				}
