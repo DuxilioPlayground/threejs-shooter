@@ -1,14 +1,19 @@
 var CONFIG = require('./config'),
+    
     utils = require('./libs/utils'),
+
 	worldHelper = require('./libs/worldHelper'),
 	lockControlsHelper = require('./libs/lockControlsHelper'),
 	movementHelper = require('./libs/movementHelper'),
-    Character = require('./libs/Character');
+
+    Character = require('./libs/Character'),
+    AnimMD2 = require('./libs/AnimMD2');
 
 var scene,
     camera,
     renderer,
-    stats;
+    stats,
+    weapon;
 
 var characters = [];
 
@@ -41,15 +46,20 @@ function init() {
         generateCharacters(scene, boxes);
 
         //weapon
-        utils.loadMD2({
+        weapon = new AnimMD2({
             md2: CONFIG.paths.models+'/shotgun/hud/Dreadus-Shotgun.md2',
             skin: CONFIG.paths.models+'/shotgun/hud/Dreadus-Shotgun.jpg',
-            onSuccess: function(mesh){
+            onCreate: function(mesh){
                 mesh.scale.set(.05,.05,.05);
                 mesh.rotation.y = Math.PI / 2;
+                mesh.position.x -= 1;
                 camera.add(mesh); 
             }
         });
+
+        document.body.addEventListener('click', function(){
+            weapon.playAnimation('pow', true);
+        }, false);
     });
 }
 
@@ -92,6 +102,9 @@ function generateCharacters(scene, boxes){
 
 function update(){
     stats.begin();
+
+    //update weapon
+    if(weapon) weapon.update();
 
     //update all characters
     characters.forEach(function(char){
