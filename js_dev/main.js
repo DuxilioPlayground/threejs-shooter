@@ -1,12 +1,15 @@
-var utils = require('./libs/utils'),
+var CONFIG = require('./config'),
+    utils = require('./libs/utils'),
 	worldHelper = require('./libs/worldHelper'),
 	lockControlsHelper = require('./libs/lockControlsHelper'),
 	movementHelper = require('./libs/movementHelper'),
-    CONFIG = require('./config');
+    Character = require('./libs/Character');
 
 var scene,
     camera,
     renderer;
+
+var characters = [];
 
 init();
 update();
@@ -51,6 +54,11 @@ function init() {
         });
     });
 
+    //characters
+    var character = new Character(CONFIG.paths.models);
+    scene.add(character.getRaw().root);
+    characters.push(character);
+
     // controls = new THREE.OrbitControls(camera);
     // controls.addEventListener('change', render);
 }
@@ -58,6 +66,12 @@ function init() {
 function update() {
     requestAnimationFrame(update);
 
+    //update all characters
+    characters.forEach(function(char){
+        char.update();
+    });
+
+    //if controls are enabled check movement
     if(lockControlsHelper.getEnabled()){
     	movementHelper.checkMovement();
     }

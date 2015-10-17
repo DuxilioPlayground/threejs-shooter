@@ -1,5 +1,6 @@
 {
     "paths": {
-        "img": "assets_public/img"
+        "img": "assets_public/img",
+        "models": "assets_public/models"
     }
 }
