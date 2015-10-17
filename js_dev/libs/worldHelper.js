@@ -39,29 +39,37 @@ var worldHelper = {
 	    return new THREE.Mesh(geometry, material);
 	},
 
-	generateBoxes: function(amount, textureUrl){
-		var texture = THREE.ImageUtils.loadTexture(textureUrl),
-			mesh,
-			boxes = [];
+	generateBoxes: function(amount, textureUrl, callback){
+		var self = this,
+			textureLoader = new THREE.TextureLoader();
 
-		for(var i = 0; i < amount; i++){
-		    mesh = this.generateBox({
-		    	width: 20,
-		    	height: 20,
-		    	depth: 20,
-		    	rgb: [55,81,159],
-		    	texture: texture
-		    });
+		var doGenerate = function(crateTexture){
+			var mesh,
+				boxes = [];
 
-		    mesh.position.x = Math.floor( Math.random() * 20 - 10 ) * 20;
-			mesh.position.y = Math.floor( Math.random() * 20 ) * 20 + 10;
-			mesh.position.z = Math.floor( Math.random() * 20 - 10 ) * 20;
-		    
-		    mesh.rotation.y = -100;
-		    boxes.push(mesh);
-    	}
+			for(var i = 0; i < amount; i++){
+			    mesh = self.generateBox({
+			    	width: 20,
+			    	height: 20,
+			    	depth: 20,
+			    	rgb: [55,81,159],
+			    	texture: crateTexture
+			    });
 
-    	return boxes;
+			    mesh.position.x = Math.floor( Math.random() * 20 - 10 ) * 20;
+				mesh.position.y = Math.floor( Math.random() * 20 ) * 20 + 10;
+				mesh.position.z = Math.floor( Math.random() * 20 - 10 ) * 20;
+			    
+			    mesh.rotation.y = -100;
+			    boxes.push(mesh);
+	    	}
+
+	    	callback(boxes);
+		};
+
+		textureLoader.load(textureUrl, function(crateTexture){
+			doGenerate(crateTexture);
+		});
 	},
 	
 	generateBox: function(options){

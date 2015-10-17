@@ -32,18 +32,23 @@ function init() {
 	scene.add(controls.getObject());
 
     //boxes
-    var boxes = worldHelper.generateBoxes(250, CONFIG.paths.img+'/crate.jpg'),
-        boxes2 = worldHelper.generateBoxes(250, CONFIG.paths.img+'/crate2.gif');
+    var handleBoxes = function(boxes){
+        boxes.forEach(function(mesh){
+            scene.add(mesh);
+        });
 
-    boxes = boxes.concat(boxes2);
-    boxes.forEach(function(mesh){
-        scene.add(mesh);
-    });
+        movementHelper.init(controls, boxes, {
+            movementSpeed: 600,
+            jumpHeight: 350,
+            enableSuperJump: true
+        });
+    };
 
-    movementHelper.init(controls, boxes, {
-        movementSpeed: 600,
-        jumpHeight: 350,
-        enableSuperJump: true
+    worldHelper.generateBoxes(250, CONFIG.paths.img+'/crate.jpg', function(boxes){
+        worldHelper.generateBoxes(250, CONFIG.paths.img+'/crate2.gif', function(boxes2){
+            boxes = boxes.concat(boxes2);
+            handleBoxes(boxes);
+        });
     });
 
     // controls = new THREE.OrbitControls(camera);
