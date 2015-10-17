@@ -1,7 +1,8 @@
 var utils = require('./libs/utils'),
 	worldHelper = require('./libs/worldHelper'),
 	lockControlsHelper = require('./libs/lockControlsHelper'),
-	movementHelper = require('./libs/movementHelper');
+	movementHelper = require('./libs/movementHelper'),
+    CONFIG = require('./config');
 
 var scene,
     camera,
@@ -16,7 +17,7 @@ function init() {
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
 
     //light
-    var light = new THREE.HemisphereLight(0xffffff, 0x555555, 0.6);
+    var light = new THREE.HemisphereLight(0xffffff, 0xaaaaaa, 0.6);
     scene.add(light);
 
     //floor
@@ -31,16 +32,18 @@ function init() {
 	scene.add(controls.getObject());
 
     //boxes
-    var boxes = worldHelper.generateBoxes(500, function(boxes){
-        boxes.forEach(function(mesh){
-            scene.add(mesh);
-        });
+    var boxes = worldHelper.generateBoxes(250, CONFIG.paths.img+'/crate.jpg'),
+        boxes2 = worldHelper.generateBoxes(250, CONFIG.paths.img+'/crate2.gif');
 
-        movementHelper.init(controls, boxes, {
-            movementSpeed: 600,
-            jumpHeight: 350,
-            enableSuperJump: true
-        });
+    boxes = boxes.concat(boxes2);
+    boxes.forEach(function(mesh){
+        scene.add(mesh);
+    });
+
+    movementHelper.init(controls, boxes, {
+        movementSpeed: 600,
+        jumpHeight: 350,
+        enableSuperJump: true
     });
 
     // controls = new THREE.OrbitControls(camera);
