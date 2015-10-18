@@ -54,7 +54,7 @@ function generateWeapon(){
     var weapon = new AnimMD2({
         md2: '/shotgun/hud/Dreadus-Shotgun.md2',
         skin: '/shotgun/hud/Dreadus-Shotgun.jpg',
-        animTimeScale: 1.5,
+        animTimeScale: 1.7,
         onCreate: function(mesh){
             mesh.scale.set(.05,.05,.05);
             mesh.rotation.y = Math.PI / 2;
