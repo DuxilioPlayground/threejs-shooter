@@ -1,10 +1,19 @@
+var CONFIG = require('../config');
+
 var AnimMD2 = function(options){
 	var loader = new THREE.MD2Loader(),
 		self = this;
 
+	//check animTimeScale option property
+	options.animTimeScale = options.animTimeScale || 1;
+	options.md2 = CONFIG.paths.models+options.md2;
+	options.skin = CONFIG.paths.models+options.skin;
+
+	//set class vars
 	this._options = options;
 	this._clock = new THREE.Clock();
 
+	//preload md2 and mesh
     loader.load(options.md2, function(geo){
         geo.computeBoundingBox();
 
@@ -42,9 +51,15 @@ AnimMD2.prototype.playAnimation = function(name, playOnce){
 		return;
 	}
 
-	var mixer = this._mixer = new THREE.AnimationMixer(mesh),
+	var options = this._options,
+		mixer = this._mixer = new THREE.AnimationMixer(mesh),
 		mesh = this._mesh,
-		self = this;
+		self = this,
+		timeScale = options.animTimeScale;
+
+	//speed animation up by <timeScale>
+	//duration is now <duration>/<timeScale>
+	mixer.timeScale = timeScale;
 
 	if(mesh){
 		var clip = THREE.AnimationClip.findByName(mesh.geometry.animations, name);
@@ -57,7 +72,7 @@ AnimMD2.prototype.playAnimation = function(name, playOnce){
 				setTimeout(function(){
 					mixer.removeAction(action);
 					self._playingAnimation = false;
-				}, clip.duration*1000);
+				}, (clip.duration/timeScale)*1000);
 			}
 		}
 	}

@@ -12,10 +12,10 @@ var CONFIG = require('./config'),
 var scene,
     camera,
     renderer,
-    stats,
-    weapon;
+    stats;
 
-var characters = [];
+var characters = [],
+    animMD2Objects = [];
 
 initStats();
 init();
@@ -46,21 +46,28 @@ function init() {
         generateCharacters(scene, boxes);
 
         //weapon
-        weapon = new AnimMD2({
-            md2: CONFIG.paths.models+'/shotgun/hud/Dreadus-Shotgun.md2',
-            skin: CONFIG.paths.models+'/shotgun/hud/Dreadus-Shotgun.jpg',
-            onCreate: function(mesh){
-                mesh.scale.set(.05,.05,.05);
-                mesh.rotation.y = Math.PI / 2;
-                mesh.position.x -= 1;
-                camera.add(mesh); 
-            }
-        });
-
-        document.body.addEventListener('click', function(){
-            weapon.playAnimation('pow', true);
-        }, false);
+        generateWeapon();
     });
+}
+
+function generateWeapon(){
+    var weapon = new AnimMD2({
+        md2: '/shotgun/hud/Dreadus-Shotgun.md2',
+        skin: '/shotgun/hud/Dreadus-Shotgun.jpg',
+        animTimeScale: 1.5,
+        onCreate: function(mesh){
+            mesh.scale.set(.05,.05,.05);
+            mesh.rotation.y = Math.PI / 2;
+            mesh.position.x -= 1;
+            camera.add(mesh); 
+        }
+    });
+
+    document.body.addEventListener('click', function(){
+        weapon.playAnimation('pow', true);
+    }, false);
+
+    animMD2Objects.push(weapon); 
 }
 
 function generateBoxes(controls, scene, callback){
@@ -103,17 +110,20 @@ function generateCharacters(scene, boxes){
 function update(){
     stats.begin();
 
-    //update weapon
-    if(weapon) weapon.update();
-
     //update all characters
     characters.forEach(function(char){
         char.update();
     });
 
-    //if controls are enabled check movement
+    //if controls are enabled
     if(lockControlsHelper.getEnabled()){
+        //check movement
     	movementHelper.checkMovement();
+
+        //update animMD2 objects
+        animMD2Objects.forEach(function(object){
+            object.update();
+        });
     }
 
     renderer.render(scene, camera);
