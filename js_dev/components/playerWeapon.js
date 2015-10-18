@@ -34,7 +34,7 @@ var playerWeapon = {
 				aniSpeed: .009,
 				maxOffset: .1,
 				updateProp: 'position',
-				updateAxis: 'z' 
+				updateAxis: 'z'
 			}
 		};
 
@@ -98,8 +98,6 @@ var playerWeapon = {
 		var weapon = this._weapon,
 			mesh = this._mesh,
 			weaponIsZoomed = this._weaponIsZoomed;
-
-		console.log(actionName);
 
 		switch(actionName){
 			case 'pow':
