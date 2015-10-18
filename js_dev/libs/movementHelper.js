@@ -1,10 +1,10 @@
 var movementHelper = {
 
-	init: function(controls, objects, options){
+	init: function(controls, collisionObjects, options){
 		this._controls = controls;
 		this._options = options;
 
-		this._objects = objects;
+		this._collisionObjects = collisionObjects;
 		this._raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
 
 		this._movement = {
@@ -19,6 +19,26 @@ var movementHelper = {
 		this._prevTime = performance.now();
 
 		this._bindKeyEvents();
+	},
+
+	getCurrMovement: function(){
+		var movement = this._movement;
+
+		for(var key in movement){
+			if(movement[key]){
+				if(['forward', 'backward', 'right', 'left'].indexOf(key) !== -1
+					&& movement.canJump !== false){
+					//walking and not jumping
+					return 'walking';
+				} else if(key === 'canJump'){
+					//jumping
+					return 'jumping'
+				} else {
+					//not walking, not jumping = idle
+					return 'idle';
+				}
+			}
+		}
 	},
 
 	checkMovement: function(){
@@ -65,7 +85,7 @@ var movementHelper = {
 
 	_checkObjectsCollision: function(){
 		var raycaster = this._raycaster,
-			objects = this._objects,
+			objects = this._collisionObjects,
 			controls = this._controls;
 
     	raycaster.ray.origin.copy(controls.getObject().position);
@@ -104,12 +124,10 @@ var movementHelper = {
 				break;
 			case 32: // space
 				if(setToVal === true){ //keydown
-					if(this._movement.canJump){
+					if(this._movement.canJump || options.enableSuperJump){
 						this._velocity.y += this._options.jumpHeight;
 					}
-					if(!options.enableSuperJump){
-						this._movement.canJump = false;
-					}
+					this._movement.canJump = false;
 				}
 				break;
 		}

@@ -1,4 +1,9 @@
 {
+	"movement": {
+		"speed": 600,
+		"jumpHeight": 350,
+		"enableSuperJump": true
+	},
     "paths": {
         "img": "assets_public/img",
         "models": "assets_public/models"
