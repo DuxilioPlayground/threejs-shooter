@@ -14,7 +14,7 @@ var playerWeapon = {
 	        	self._mesh = mesh;
 	            mesh.scale.set(.05,.05,.05);
 	            mesh.rotation.y = Math.PI / 2;
-	            mesh.position.x -= 1;
+	            mesh.position.x -= 1.1;
 	            camera.add(mesh); 
 	        }
 	    });
@@ -81,17 +81,44 @@ var playerWeapon = {
 
 	_bindEvents: function(){
 		var self = this;
-		document.body.addEventListener('click', function(){
-			self._triggerAction('pow');
+		document.body.addEventListener('click', function(e){
+			console.log(e.button);
+			switch(e.button){
+				case 0: //left
+					self._triggerAction('pow');
+					break;
+				case 2: //right
+					self._triggerAction('zoom');
+					break;
+			}
 		}, false);
 	},
 
 	_triggerAction: function(actionName){
-		var weapon = this._weapon;
+		var weapon = this._weapon,
+			mesh = this._mesh,
+			weaponIsZoomed = this._weaponIsZoomed;
+
+		console.log(actionName);
 
 		switch(actionName){
 			case 'pow':
 				weapon.playAnimation('pow', true);
+				break;
+			case 'zoom':
+				if(!weaponIsZoomed){
+					mesh.rotation.z -= 0.2;
+		            mesh.position.z += 1;
+		            mesh.position.y += .83;
+		            mesh.position.x -= 0.1;
+		            this._weaponIsZoomed = true;
+	            } else {
+	            	mesh.rotation.z += 0.2;
+		            mesh.position.z -= 1;
+		            mesh.position.y -= .83;
+		            mesh.position.x += 0.1;
+	            	this._weaponIsZoomed = false;
+	            }
 				break;
 		}
 	}
