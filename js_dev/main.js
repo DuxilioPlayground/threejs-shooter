@@ -10,9 +10,9 @@ var CONFIG = require('./config'),
 var components = {
     playerWeapon: require('./components/playerWeapon'),
     boxes: require('./components/boxes'),
-    bots:require('./components/bots')
+    characters: require('./components/characters')
 },
-componentsToUpdate = [components.playerWeapon, components.bots];
+componentsToUpdate = [components.playerWeapon, components.characters];
 
 //global vars
 var scene,
@@ -51,8 +51,8 @@ function init() {
             enableSuperJump: CONFIG.movement.enableSuperJump
         });
 
-        //bots
-        components.bots.init(scene, boxes);
+        //characters
+        components.characters.init(scene, boxes);
 
         //weapon
         components.playerWeapon.init(camera);
