@@ -6,6 +6,7 @@
 	},
     "paths": {
         "img": "assets_public/img",
-        "models": "assets_public/models"
+        "models": "assets_public/models",
+        "sounds": "assets_public/sounds"
     }
 }

@@ -12,10 +12,13 @@ var playerWeapon = {
 	        animTimeScale: 1.7,
 	        onCreate: function(mesh){
 	        	self._mesh = mesh;
+
 	            mesh.scale.set(.05,.05,.05);
 	            mesh.rotation.y = Math.PI / 2;
 	            mesh.position.x -= 1;
-	            camera.add(mesh); 
+
+	            camera.add(mesh);
+	            mesh.add(self._sounds.shotgunFired);
 	        }
 	    });
 
@@ -38,6 +41,9 @@ var playerWeapon = {
 			}
 		};
 
+		this._sounds = {};
+		this._initSounds(camera);
+
 		this._bindEvents();
 	},
 
@@ -45,6 +51,15 @@ var playerWeapon = {
 		var currAniName = movementHelper.getCurrMovement() === 'walking' ? 'walking' : 'breathing';
 		this._updatePositionAni(currAniName);
 		this._weapon.update();
+	},
+
+	_initSounds: function(camera){
+		var listener = new THREE.AudioListener();
+		camera.add(listener);
+
+		var shotgunFired = new THREE.Audio(listener);
+		shotgunFired.load('assets_public/sounds/shotgunFired.mp3');
+		this._sounds['shotgunFired'] = shotgunFired;
 	},
 
 	_updatePositionAni: function(name){
@@ -87,11 +102,16 @@ var playerWeapon = {
 	},
 
 	_triggerAction: function(actionName){
-		var weapon = this._weapon;
+		var weapon = this._weapon,
+			mesh = this._mesh,
+			shotgunFiredSound = mesh.children[0];
 
 		switch(actionName){
 			case 'pow':
-				weapon.playAnimation('pow', true);
+				if(!shotgunFiredSound.isPlaying){
+					weapon.playAnimation('pow', true);
+					shotgunFiredSound.play();
+				}
 				break;
 		}
 	}
