@@ -9,7 +9,7 @@ var playerWeapon = {
 		this._weapon = new AnimMD2({
 	        md2: '/shotgun/hud/Dreadus-Shotgun.md2',
 	        skin: '/shotgun/hud/Dreadus-Shotgun.jpg',
-	        animTimeScale: 1.7,
+	        animTimeScale: 2,
 	        onCreate: function(mesh){
 	        	self._mesh = mesh;
 
