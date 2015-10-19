@@ -4,7 +4,7 @@ var CONFIG = require('../config'),
 var worldHelper = {
 
 	generateRenderer: function(clearHex){
-		var renderer = new THREE.WebGLRenderer();
+		var renderer = new THREE.WebGLRenderer({ antialias: true });
     	renderer.setClearColor(clearHex);
     	renderer.setPixelRatio(window.devicePixelRatio || 1);
     	renderer.setSize(window.innerWidth, window.innerHeight);
@@ -36,8 +36,10 @@ var worldHelper = {
 			}
 		}
 
-	    var material = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors });
-	    return new THREE.Mesh(geometry, material);
+	    var material = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors }),
+	    	mesh = new Physijs.PlaneMesh(geometry, material, 0);
+	    mesh.receiveShadow = true;
+	    return mesh;
 	},
 
 	generateBoxes: function(amount, texturePath, callback){
@@ -99,7 +101,8 @@ var worldHelper = {
 		    }
 	    }
 
-	    return new THREE.Mesh(box, material);
+	    var mesh = new Physijs.BoxMesh(box, material, 0);
+	    return mesh;
 	}
 
 };

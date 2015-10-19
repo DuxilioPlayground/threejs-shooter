@@ -17,8 +17,23 @@ var playerWeapon = {
 	            mesh.rotation.y = Math.PI / 2;
 	            mesh.position.x -= 1;
 
-	            camera.add(mesh);
 	            mesh.add(self._sounds.shotgunFired);
+
+			    // var playerMesh = new Physijs.BoxMesh(
+			    //     new THREE.BoxGeometry(20, 20, 20),
+			    //     new THREE.MeshBasicMaterial({ color: 0xff0000 }),
+			    //     200
+			    // );
+			    // playerMesh.position.z -= 0;
+			    // playerMesh.add(mesh);
+
+			    // playerMesh.addEventListener('collision', function(other_object, relative_velocity, relative_rotation, contact_normal) {
+			    //     // `this` has collided with `other_object` with an impact speed of
+			    //     //`relative_velocity` and a rotational force of `relative_rotation` and at normal `contact_normal`
+			    //     console.log(arguments);
+			    // });
+
+	            camera.add(mesh);
 	        }
 	    });
 

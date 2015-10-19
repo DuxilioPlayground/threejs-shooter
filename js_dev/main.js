@@ -6,6 +6,10 @@ var CONFIG = require('./config'),
 	lockControlsHelper = require('./libs/lockControlsHelper'),
 	movementHelper = require('./libs/movementHelper');
 
+//init physi
+Physijs.scripts.worker = '/assets_public/js/physi/physijs_worker.js';
+Physijs.scripts.ammo = '/assets_public/js/physi/ammo.example.js';
+
 //components
 var components = {
     playerWeapon: require('./components/playerWeapon'),
@@ -18,14 +22,15 @@ componentsToUpdate = [components.playerWeapon, components.characters];
 var scene,
     camera,
     renderer,
-    stats;
+    stats,
+    controls;
 
 initStats();
 init();
 update();
 
 function init() {
-    scene = new THREE.Scene();
+    scene = new Physijs.Scene;
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
 
     //light
@@ -40,7 +45,7 @@ function init() {
     renderer = worldHelper.generateRenderer(0x0f445c);
     document.body.appendChild(renderer.domElement);
 
-    var controls = lockControlsHelper.init(document.body, camera);
+    controls = lockControlsHelper.init(document.body, camera);
 	scene.add(controls.getObject());
 
     //boxes
@@ -73,6 +78,7 @@ function update(){
         });
     }
 
+    scene.simulate(); //run physics
     renderer.render(scene, camera);
 
     stats.end();
