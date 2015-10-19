@@ -5,7 +5,7 @@ var movementHelper = {
 		this._options = options;
 
 		this._collisionObjects = collisionObjects;
-		this._raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
+		this._raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, -1), 0, 10);
 
 		this._movement = {
 			forward: false,
@@ -93,6 +93,10 @@ var movementHelper = {
 
 		var intersections = raycaster.intersectObjects(objects),
 			isOnObject = intersections.length > 0;
+
+		if(isOnObject){
+			console.log(intersections);
+		}
 
     	return isOnObject;
 	},
