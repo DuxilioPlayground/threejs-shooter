@@ -16,11 +16,6 @@ var getCharacterDamage = function(distance, weaponRange, weaponDamage){
     //distance: <distance between player and character e.g. 40>,
     //weaponRange: <range of weapon e.g. 50>,
     //weaponDamage: <damage weapon does at 0 distance e.g. 100>;
-    
-    if(distance < weaponRange){
-        return weaponDamage;
-    } else {
-        return 0;
-    }
+    return (distance < weaponRange) ? weaponDamage : 0;
 };
 ```
