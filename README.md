@@ -7,7 +7,7 @@ gulp
 
 Now open `localhost:9000` in your browser.
 
-###### Notes
+#### Notes
 
-**Weapon Damage**
+###### Weapon Damage
 `(<totalHealth> + <weaponRange>) - <distance between player and character> = <weaponDamage>`
