@@ -65,7 +65,6 @@ var movementHelper = {
     	var isOnObject = this._checkObjectsCollision();
     	if(isOnObject){
 			velocity.y = Math.max(0, velocity.y);
-			velocity.z = Math.max(0, velocity.z);
 			movement.canJump = true;
 		}
 
