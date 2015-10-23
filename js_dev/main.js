@@ -55,7 +55,7 @@ function init() {
         components.characters.init(scene, boxes);
 
         //weapon
-        components.playerWeapon.init(camera);
+        components.playerWeapon.init(camera, controls, boxes);
     });
 }
 

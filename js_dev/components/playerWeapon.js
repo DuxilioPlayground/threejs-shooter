@@ -3,8 +3,11 @@ var AnimMD2 = require('../libs/AnimMD2'),
 
 var playerWeapon = {
 	
-	init: function(camera){
+	init: function(camera, controls, collisionObjects){
 		var self = this;
+
+		this._controls = controls;
+		this._collisionObjects = collisionObjects;
 
 		this._weapon = new AnimMD2({
 	        md2: '/shotgun/hud/Dreadus-Shotgun.md2',
@@ -49,8 +52,23 @@ var playerWeapon = {
 
 	update: function(){
 		var currAniName = movementHelper.getCurrMovement() === 'walking' ? 'walking' : 'breathing';
+
 		this._updatePositionAni(currAniName);
 		this._weapon.update();
+
+		//collision
+		var controlsObj = this._controls.getObject(),
+			origin = controlsObj.position.clone(),
+			direction = new THREE.Vector3(0, 0, -1);
+
+		origin.y += 10;
+		direction.applyEuler(new THREE.Euler(
+			controlsObj.rotation.x, controlsObj.rotation.y, controlsObj.rotation.Z, 'YXZ'
+		));
+
+		var raycaster = new THREE.Raycaster(origin, direction, 0, 20),
+			intersects = raycaster.intersectObjects(this._collisionObjects);
+		console.log(intersects);
 	},
 
 	_initSounds: function(camera){

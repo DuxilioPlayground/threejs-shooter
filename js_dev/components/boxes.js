@@ -8,7 +8,7 @@ var boxes = {
 		this._scene = scene;
 
 	    worldHelper.generateBoxes(250, '/crate.jpg', function(boxes){
-	        worldHelper.generateBoxes(250, '/crate2.gif', function(boxes2){
+	        worldHelper.generateBoxes(250, '/crate3.jpg', function(boxes2){
 	            boxes = boxes.concat(boxes2);
 	            self._addBoxesToScene(boxes);
 	            callback(boxes);

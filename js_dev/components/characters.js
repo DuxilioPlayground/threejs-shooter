@@ -18,6 +18,7 @@ var bots = {
 	    });
 
 	    this._objects = objects;
+	    return objects;
 	},
 
 	update: function(){
