@@ -19,3 +19,7 @@ var getCharacterDamage = function(distance, weaponRange, weaponDamage){
     return (distance < weaponRange) ? weaponDamage : 0;
 };
 ```
+
+###### Explosions
+* http://oos.moxiecode.com/js_webgl/explosion/
+* http://codepen.io/Xanmia/pen/DoljI
