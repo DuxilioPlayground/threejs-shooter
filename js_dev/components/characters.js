@@ -1,32 +1,27 @@
-var Character = require('../libs/Character');
+import Character from '../libs/Character';
 
-var bots = {
-	
-	init: function(scene, boxes){
-		var objects = [],
-			characterDetails = [{
-		        x: 20,
-		        character: 'ogro'
-		    }, {
-		        x: -20
-		    }];
+export default {
+  init(scene) {
+    const characters = [];
+    const characterConfigs = [{
+      x: 20,
+      character: 'ogro'
+    }, {
+      x: -20
+    }];
 
-	    characterDetails.forEach(function(details){
-	        var character = new Character(details);
-	        scene.add(character.getRaw().root);
-	        objects.push(character);
-	    });
+    for (const config of characterConfigs) {
+      const character = new Character(config);
+      scene.add(character.getRaw().root);
+      characters.push(character);
+    }
 
-	    this._objects = objects;
-	},
+    this._characters = characters;
+  },
 
-	update: function(){
-		//update all characters
-	    this._objects.forEach(function(obj){
-	        obj.update();
-	    });
-	}
-
+  update() {
+    for (const character of this._characters) {
+      character.update();
+    }
+  }
 };
-
-module.exports = bots;

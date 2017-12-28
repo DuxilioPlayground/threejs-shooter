@@ -1,28 +1,22 @@
-var worldHelper = require('../libs/worldHelper');
+import worldHelper from '../libs/worldHelper';
 
-var boxes = {
-	
-	init: function(scene, callback){
-		var self = this;
+export default {
+  init(scene, callback) {
+    this._scene = scene;
 
-		this._scene = scene;
+    worldHelper.generateBoxes(250, '/crate3.jpg', (boxes) => {
+      worldHelper.generateBoxes(250, '/crate-tnt-1.jpg', (boxes2) => {
+        boxes = boxes.concat(boxes2);
+        this._addBoxesToScene(boxes);
+        callback(boxes);
+      });
+    });
+  },
 
-	    worldHelper.generateBoxes(250, '/crate3.jpg', function(boxes){
-	        worldHelper.generateBoxes(250, '/crate-tnt-1.jpg', function(boxes2){
-	            boxes = boxes.concat(boxes2);
-	            self._addBoxesToScene(boxes);
-	            callback(boxes);
-	        });
-	    });
-	},
-
-	_addBoxesToScene: function(boxes){
-		var scene = this._scene;
-        boxes.forEach(function(mesh){
-            scene.add(mesh);
-        });
+  _addBoxesToScene(boxMeshes) {
+    const scene = this._scene;
+    for (const mesh of boxMeshes) {
+      scene.add(mesh);
     }
-
+  }
 };
-
-module.exports = boxes;

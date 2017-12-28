@@ -2,7 +2,7 @@
 	"movement": {
 		"speed": 600,
 		"jumpHeight": 350,
-		"enableSuperJump": true
+		"enableSuperJump": false
 	},
     "paths": {
         "img": "assets_public/img",

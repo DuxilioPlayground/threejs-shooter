@@ -1,87 +1,96 @@
-var CONFIG = require('../../config'),
-    CHARACTERS_CONFIG = require('./charactersConfig');
+import CONFIG from '../../config';
+import CHARACTERS_CONFIG from './charactersConfig';
 
-var Character = function(options){
-	var options = this._options = options || {};
+export default class Character {
+  constructor(userOptions = {}) {
+    const options = this._options = Object.assign({
+      character: 'ratamahatta',
+      skin: 0,
+      animation: 'stand'
+    }, userOptions);
+
+    const charConfig = CHARACTERS_CONFIG[options.character];
+    const character = this._createCharacter(charConfig);
 
     this._eventListeners = {};
-	this._clock = new THREE.Clock();
-
-    var charConfig = CHARACTERS_CONFIG[options.character || 'ratamahatta'],
-        character = this._createCharacter(charConfig);
+    this._clock = new THREE.Clock();
 
     this._character = character;
-};
+  }
 
-Character.prototype.on = function(event, callback){
+  on(event, callback) {
     if(typeof this._eventListeners[event] !== 'array'){
-        this._eventListeners[event] = [];
+      this._eventListeners[event] = [];
     }
     this._eventListeners[event].push(callback);
-};
+  }
 
-Character.prototype._triggerEvent = function(event){
-    var listeners = this._eventListeners[event],
-        self = this;
+  _triggerEvent(event) {
+    const listeners = this._eventListeners[event];
 
     if(typeof listeners === 'object'){
-        listeners.forEach(function(callback){
-            callback(self.getRaw());
-        });
+      listeners.forEach(callback => {
+        callback(this.getRaw());
+      });
     }
-};
+  }
 
-Character.prototype._createCharacter = function(charConfig){
-    var self = this,
-        options = this._options,
-        character = new THREE.MD2Character();
+  _createCharacter(charConfig) {
+    const options = this._options;
+    const character = new THREE.MD2Character();
 
     character.scale = .5;
 
-    var self = this;
-    character.onLoadComplete = function(){
-        self.setSkin(options.skin || 0);
-        self.setAnimation(options.animation || 'stand');
+    character.onLoadComplete = () => {
+      this.setSkin(options.skin);
+      this.setAnimation(options.animation);
 
-        if(typeof options.weapon === 'number'){
-            self.setWeapon(options.weapon);
-        }
+      if(typeof options.weapon === 'number'){
+        this.setWeapon(options.weapon);
+      }
 
-        if(typeof options.x === 'number') character.root.position.x = options.x;
-        if(typeof options.y === 'number') character.root.position.y = options.y;
-        if(typeof options.z === 'number') character.root.position.z = options.z;
+      if (typeof options.x === 'number') {
+        character.root.position.x = options.x;
+      }
 
-        self._triggerEvent('create');
+      if (typeof options.y === 'number') {
+        character.root.position.y = options.y;
+      }
+
+      if (typeof options.z === 'number') {
+        character.root.position.z = options.z;
+      }
+
+      this._triggerEvent('create');
     };
 
     charConfig.baseUrl = CONFIG.paths.models+charConfig.path;
     character.loadParts(charConfig);
 
     return character;
-};
+  }
 
-Character.prototype.setSkin = function(idx){
-	//character.skinsBody
-	this._character.setSkin(idx);
-};
+  setSkin(idx) {
+    //character.skinsBody
+    this._character.setSkin(idx);
+  }
 
-Character.prototype.setWeapon = function(idx){
-	//character.weapons
-	this._character.setWeapon(idx);
-};
+  setWeapon(idx) {
+    //character.weapons
+    this._character.setWeapon(idx);
+  }
 
-Character.prototype.setAnimation = function(name){
-	//character.meshBody.geometry.animations
-	this._character.setAnimation(name);
-};
+  setAnimation(name) {
+    //character.meshBody.geometry.animations
+    this._character.setAnimation(name);
+  }
 
-Character.prototype.getRaw = function(){
-	return this._character;
-};
+  getRaw() {
+    return this._character;
+  }
 
-Character.prototype.update = function(){
-	var delta = this._clock.getDelta();
-	this._character.update(delta);
-};
-
-module.exports = Character;
+  update() {
+    const delta = this._clock.getDelta();
+    this._character.update(delta);
+  }
+}
