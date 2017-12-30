@@ -1,6 +1,8 @@
+import PointerLockControls from 'three-pointerlock';
+
 export default {
   init(element, camera, controls){
-    this._controls = new THREE.PointerLockControls(camera);
+    this._controls = new PointerLockControls(camera);
     this._element = element;
     this._bindEvents();
   },

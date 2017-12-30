@@ -4,9 +4,9 @@
 		"jumpHeight": 350,
 		"enableSuperJump": false
 	},
-    "paths": {
-        "img": "assets_public/img",
-        "models": "assets_public/models",
-        "sounds": "assets_public/sounds"
-    }
+  "paths": {
+    "img": "assets_public/img",
+    "models": "assets_public/models",
+    "sounds": "assets_public/sounds"
+  }
 }

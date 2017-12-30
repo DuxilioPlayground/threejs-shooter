@@ -1,13 +1,10 @@
+### Setup
 ```
-git clone git@github.com:DuxilioPlayground/threejs-shooter.git
-cd threejs-shooter
-sudo npm i
-gulp
+yarn install
+yarn run serve
 ```
 
-Now open `localhost:9000` in your browser.
-
-#### Notes
+### Notes
 
 ###### Weapon Damage
 ```

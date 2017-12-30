@@ -1,6 +1,8 @@
 var gulp = require('gulp'),
     connect = require('gulp-connect'),
+    sass = require('gulp-sass'),
     htmlmin = require('gulp-htmlmin'),
+    ejsLocals = require('gulp-ejs-locals'),
     gutil = require('gulp-util'),
     autoprefixer = require('gulp-autoprefixer'),
     rename = require('gulp-rename'),
@@ -16,12 +18,23 @@ var pkg = require('./package.json'),
         dev: 'js_dev'
     },
     paths = {
+        html: {
+            all: [rootPaths.dev+'/html/**/*.ejs'],
+            src: [rootPaths.dev+'/html/**/*.ejs', '!'+rootPaths.dev+'/html/_inc/**/*.ejs'],
+            destFolder: rootPaths.public
+        },
         js: {
             src: [rootPaths.dev+'/main.js'],
             srcAll: [rootPaths.dev+'/**/*.js'],
             destFile: 'app.js',
             destFileMin: 'app.min.js',
             destFolder: rootPaths.public+'/js/'
+        },
+        sass: {
+            src: [rootPaths.dev+'/sass/main.scss'],
+            all: [rootPaths.dev+'/sass/**/*.scss'],
+            destFile: 'main.min.css',
+            destFolder: rootPaths.public+'/css/'
         }
     };
 

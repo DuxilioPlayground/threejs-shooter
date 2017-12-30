@@ -1,5 +1,3 @@
-import playerWeapon from './playerWeapon';
-import boxes from './boxes';
-import characters from './characters';
+import boxes from './Boxes';
 
-export {playerWeapon, boxes, characters};
+export {boxes};

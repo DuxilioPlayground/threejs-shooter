@@ -1,3 +1,6 @@
+import * as THREE from 'three';
+import PointerLockControls from 'three-pointerlock';
+
 export default {
   init(controls, collisionObjects, options) {
     this._controls = controls;
@@ -50,7 +53,7 @@ export default {
     const time = performance.now();
     const delta = (time - this._prevTime) / 1000;
 
-      //update velocity
+    //update velocity
     velocity.x -= velocity.x * 10.0 * delta;
     velocity.z -= velocity.z * 10.0 * delta;
     velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass

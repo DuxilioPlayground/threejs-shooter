@@ -1,8 +1,12 @@
-import CONFIG from './config';
-import utils from './libs/utils';
-import worldHelper from './libs/worldHelper';
-import lockControlsHelper from './libs/lockControlsHelper';
-import  movementHelper from './libs/movementHelper';
+import * as THREE from 'three';
+import Stats from 'stats-js';
+
+import {movement} from './config';
+import utils from './helpers/utils';
+import worldHelper from './helpers/worldHelper';
+import lockControlsHelper from './helpers/lockControlsHelper';
+import movementHelper from './helpers/movementHelper';
+import mouseHelper from './helpers/mouseHelper';
 import * as components from './components';
 
 let scene = null;
@@ -38,19 +42,17 @@ function init() {
   scene.add(controls.getObject());
 
   //boxes
-  components.boxes.init(scene, (boxes) => {
-    movementHelper.init(controls, boxes, {
-      movementSpeed: CONFIG.movement.speed,
-      jumpHeight: CONFIG.movement.jumpHeight,
-      enableSuperJump: CONFIG.movement.enableSuperJump
+  components.boxes.setScene(scene);
+  components.boxes.generate()
+    .then((boxes) => {
+      movementHelper.init(controls, boxes, {
+        movementSpeed: movement.speed,
+        jumpHeight: movement.jumpHeight,
+        enableSuperJump: movement.enableSuperJump
+      });
+
+      mouseHelper.init(camera, boxes);
     });
-
-    //characters
-    components.characters.init(scene, boxes);
-
-    //weapon
-    components.playerWeapon.init(camera);
-  });
 }
 
 function update(){
@@ -62,6 +64,8 @@ function update(){
     for (const component of componentsToUpdate) {
       component.update();
     }
+
+    mouseHelper.getCollidingObjects();
   }
 
   renderer.render(scene, camera);
