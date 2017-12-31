@@ -19,6 +19,10 @@ export default {
     this._characters = characters;
   },
 
+  getCharacters() {
+    return this._characters;
+  },
+
   update() {
     for (const character of this._characters) {
       character.update();

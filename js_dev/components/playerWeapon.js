@@ -41,7 +41,13 @@ export default {
     this._sounds = {};
     this._initSounds(camera);
 
+    this._animationCallbacks = [];
+
     this._bindEvents();
+  },
+
+  onAnimation(name, callback) {
+    this._animationCallbacks[name] = callback;
   },
 
   update() {
@@ -99,12 +105,16 @@ export default {
     const weapon = this._weapon;
     const mesh = this._mesh;
     const shotgunFiredSound = mesh.children[0];
+    const animationCallbacks = this._animationCallbacks;
 
     switch(actionName){
       case 'pow':
         if(!shotgunFiredSound.isPlaying){
           weapon.playAnimation('pow', true);
           shotgunFiredSound.play();
+          if (animationCallbacks.pow) {
+            animationCallbacks.pow();
+          }
         }
       break;
     }

@@ -2,7 +2,8 @@ import CONFIG from './config';
 import utils from './libs/utils';
 import worldHelper from './libs/worldHelper';
 import lockControlsHelper from './libs/lockControlsHelper';
-import  movementHelper from './libs/movementHelper';
+import movementHelper from './libs/movementHelper';
+import mouseHelper from './libs/mouseHelper';
 import * as components from './components';
 
 let scene = null;
@@ -47,9 +48,18 @@ function init() {
 
     //characters
     components.characters.init(scene, boxes);
+    mouseHelper.init(camera);
 
     //weapon
     components.playerWeapon.init(camera);
+    components.playerWeapon.onAnimation('pow', () => {
+      const collidingBoxes = mouseHelper.checkCollidingWithObjects(window.boxes);
+      for (const {object} of collidingBoxes) {
+        scene.remove(object);
+      }
+    });
+
+    window.boxes = boxes;
   });
 }
 
